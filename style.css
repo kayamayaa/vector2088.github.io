@@ -1,0 +1,166 @@
+/* --- VARIABLES --- */
+:root {
+    --bg-color: #050505;
+    --term-green: #00ff41;
+    --term-green-dim: #008f11;
+    --glow: 0 0 8px rgba(0, 255, 65, 0.4);
+    --font-main: 'VT323', monospace;
+}
+
+/* --- RESET & BASE --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--term-green);
+    font-family: var(--font-main);
+    font-size: 20px;
+    line-height: 1.5;
+    overflow-x: hidden;
+}
+
+/* --- CRT SCANLINE EFFECT --- */
+.scanlines {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(
+        to bottom,
+        rgba(255,255,255,0),
+        rgba(255,255,255,0) 50%,
+        rgba(0,0,0,0.2) 50%,
+        rgba(0,0,0,0.2)
+    );
+    background-size: 100% 4px;
+    pointer-events: none; /* Lets you click through the overlay */
+    z-index: 999;
+}
+
+/* --- LAYOUT --- */
+.terminal-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+    text-shadow: var(--glow);
+}
+
+.layout {
+    display: flex;
+    gap: 40px;
+    margin-top: 20px;
+}
+
+.sidebar {
+    flex: 1;
+    min-width: 200px;
+    border-right: 2px dashed var(--term-green-dim);
+    padding-right: 20px;
+}
+
+.content {
+    flex: 3;
+}
+
+/* --- TYPOGRAPHY & ELEMENTS --- */
+h1, h2, h3 {
+    color: var(--term-green);
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+p {
+    margin-bottom: 15px;
+}
+
+a {
+    color: var(--term-green);
+    text-decoration: none;
+}
+
+a:hover {
+    background-color: var(--term-green);
+    color: var(--bg-color);
+    text-shadow: none;
+}
+
+ul {
+    list-style: none;
+    margin-bottom: 30px;
+}
+
+ul li {
+    margin-bottom: 10px;
+}
+
+.ascii-art {
+    font-size: 14px;
+    line-height: 1.2;
+    margin-bottom: 20px;
+    white-space: pre-wrap;
+}
+
+.dashed-line {
+    border: none;
+    border-top: 2px dashed var(--term-green-dim);
+    margin: 20px 0;
+}
+
+blockquote {
+    border-left: 4px solid var(--term-green);
+    padding-left: 15px;
+    margin: 20px 0;
+    color: var(--term-green-dim);
+    font-style: italic;
+}
+
+/* --- TABLES --- */
+.term-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+.term-table th, .term-table td {
+    border: 1px solid var(--term-green-dim);
+    padding: 8px 12px;
+    text-align: left;
+}
+
+.term-table th {
+    background-color: var(--term-green-dim);
+    color: var(--bg-color);
+    text-shadow: none;
+}
+
+/* --- BLINKING CURSOR --- */
+.prompt {
+    margin-top: 40px;
+}
+
+.cursor {
+    animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+/* --- RESPONSIVE --- */
+@media (max-width: 768px) {
+    .layout {
+        flex-direction: column;
+    }
+    .sidebar {
+        border-right: none;
+        border-bottom: 2px dashed var(--term-green-dim);
+        padding-bottom: 20px;
+    }
+}
