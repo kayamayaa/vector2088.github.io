@@ -1,13 +1,20 @@
-/* --- VARIABLES --- */
+/* --- COLOR PALETTE & VARIABLES --- */
 :root {
-    --bg-color: #050505;
-    --term-green: #00ff41;
-    --term-green-dim: #008f11;
-    --glow: 0 0 8px rgba(0, 255, 65, 0.4);
-    --font-main: 'VT323', monospace;
+    --bg-dark: #070a13;
+    --bg-panel: rgba(16, 22, 40, 0.6);
+    --border-color: rgba(0, 210, 255, 0.15);
+    --border-glow: rgba(0, 210, 255, 0.5);
+    --text-main: #e2e8f0;
+    --text-muted: #8b9bb4;
+    --accent-cyan: #00d2ff;
+    --accent-magenta: #ff0055;
+    --accent-green: #00ff88;
+    
+    --font-header: 'Rajdhani', sans-serif;
+    --font-body: 'Inter', sans-serif;
 }
 
-/* --- RESET & BASE --- */
+/* --- GLOBAL STYLES --- */
 * {
     margin: 0;
     padding: 0;
@@ -15,152 +22,218 @@
 }
 
 body {
-    background-color: var(--bg-color);
-    color: var(--term-green);
-    font-family: var(--font-main);
-    font-size: 20px;
-    line-height: 1.5;
+    background-color: var(--bg-dark);
+    background-image: 
+        radial-gradient(circle at 15% 50%, rgba(0, 210, 255, 0.03) 0%, transparent 50%),
+        radial-gradient(circle at 85% 30%, rgba(255, 0, 85, 0.03) 0%, transparent 50%);
+    color: var(--text-main);
+    font-family: var(--font-body);
+    line-height: 1.6;
     overflow-x: hidden;
 }
 
-/* --- CRT SCANLINE EFFECT --- */
-.scanlines {
-    position: fixed;
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-track {
+    background: var(--bg-dark);
+}
+::-webkit-scrollbar-thumb {
+    background: rgba(0, 210, 255, 0.3);
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-cyan);
+}
+
+/* --- STICKY HEADER --- */
+.sticky-header {
+    position: sticky;
     top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: linear-gradient(
-        to bottom,
-        rgba(255,255,255,0),
-        rgba(255,255,255,0) 50%,
-        rgba(0,0,0,0.2) 50%,
-        rgba(0,0,0,0.2)
-    );
-    background-size: 100% 4px;
-    pointer-events: none; /* Lets you click through the overlay */
-    z-index: 999;
+    z-index: 1000;
+    background: rgba(7, 10, 19, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
 }
 
-/* --- LAYOUT --- */
-.terminal-container {
-    max-width: 1000px;
+.header-container {
+    max-width: 1400px;
     margin: 0 auto;
-    padding: 20px;
-    text-shadow: var(--glow);
-}
-
-.layout {
+    padding: 15px 30px;
     display: flex;
-    gap: 40px;
-    margin-top: 20px;
+    justify-content: space-between;
+    align-items: center;
 }
 
-.sidebar {
-    flex: 1;
-    min-width: 200px;
-    border-right: 2px dashed var(--term-green-dim);
-    padding-right: 20px;
+.logo-space {
+    display: flex;
+    align-items: center;
+    gap: 15px;
 }
 
-.content {
-    flex: 3;
+/* Logo Styling */
+.header-logo {
+    height: 40px;
+    width: auto;
+    border-radius: 4px;
+    /* Adds a subtle glow to the image itself */
+    filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.2)); 
 }
 
-/* --- TYPOGRAPHY & ELEMENTS --- */
-h1, h2, h3 {
-    color: var(--term-green);
+.header-title {
+    font-family: var(--font-header);
+    font-size: 1.4rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--accent-cyan);
+    text-shadow: 0 0 10px rgba(0, 210, 255, 0.4);
+}
+
+.nav-status {
+    font-family: var(--font-header);
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+}
+
+.status-green {
+    color: var(--accent-green);
+    text-shadow: 0 0 8px rgba(0, 255, 136, 0.5);
+    font-weight: 700;
+}
+
+/* --- MAIN CONTENT & INTRO --- */
+.content-wrapper {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 40px 30px;
+}
+
+.page-intro {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.page-intro h1 {
+    font-family: var(--font-header);
+    font-size: 3rem;
+    font-weight: 700;
+    letter-spacing: 3px;
     margin-bottom: 15px;
-    text-transform: uppercase;
+    background: linear-gradient(90deg, #fff, var(--accent-cyan));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.page-intro p {
+    color: var(--text-muted);
+    max-width: 600px;
+    margin: 0 auto;
+    font-size: 1.1rem;
+}
+
+/* --- GLOSSARY GRID (GLASSMORPHISM) --- */
+.glossary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 25px;
+}
+
+.glossary-card {
+    background: var(--bg-panel);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 25px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.glossary-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--border-glow);
+    box-shadow: 0 10px 25px rgba(0, 210, 255, 0.1);
+}
+
+/* Accent line on the left of cards */
+.glossary-card::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 3px;
+    background: var(--border-color);
+    transition: background 0.3s ease;
+}
+
+.glossary-card:hover::before {
+    background: var(--accent-cyan);
+}
+
+.glossary-card h2 {
+    font-family: var(--font-header);
+    font-size: 1.5rem;
+    color: #fff;
+    margin-bottom: 10px;
     letter-spacing: 1px;
 }
 
-p {
-    margin-bottom: 15px;
+.glossary-card p {
+    font-size: 0.95rem;
+    color: var(--text-muted);
 }
 
-a {
-    color: var(--term-green);
-    text-decoration: none;
+/* --- TAGS --- */
+.card-tag {
+    display: inline-block;
+    font-family: var(--font-header);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    margin-bottom: 12px;
+    background: rgba(255,255,255,0.05);
 }
 
-a:hover {
-    background-color: var(--term-green);
-    color: var(--bg-color);
-    text-shadow: none;
-}
+.tag-core { color: #fff; border: 1px solid rgba(255,255,255,0.2); }
+.tag-gov { color: var(--accent-cyan); border: 1px solid rgba(0, 210, 255, 0.3); }
+.tag-military { color: #ffaa00; border: 1px solid rgba(255, 170, 0, 0.3); }
+.tag-bio { color: var(--accent-magenta); border: 1px solid rgba(255, 0, 85, 0.3); }
+.tag-status { color: #ff4444; border: 1px solid rgba(255, 68, 68, 0.3); }
+.tag-tech { color: #b366ff; border: 1px solid rgba(179, 102, 255, 0.3); }
+.tag-loc { color: var(--accent-green); border: 1px solid rgba(0, 255, 136, 0.3); }
+.tag-corp { color: #4488ff; border: 1px solid rgba(68, 136, 255, 0.3); }
+.tag-crime { color: #ff3333; border: 1px solid rgba(255, 51, 51, 0.3); }
 
-ul {
-    list-style: none;
-    margin-bottom: 30px;
-}
-
-ul li {
-    margin-bottom: 10px;
-}
-
-.ascii-art {
-    font-size: 14px;
-    line-height: 1.2;
-    margin-bottom: 20px;
-    white-space: pre-wrap;
-}
-
-.dashed-line {
-    border: none;
-    border-top: 2px dashed var(--term-green-dim);
-    margin: 20px 0;
-}
-
-blockquote {
-    border-left: 4px solid var(--term-green);
-    padding-left: 15px;
-    margin: 20px 0;
-    color: var(--term-green-dim);
-    font-style: italic;
-}
-
-/* --- TABLES --- */
-.term-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 20px 0;
-}
-
-.term-table th, .term-table td {
-    border: 1px solid var(--term-green-dim);
-    padding: 8px 12px;
-    text-align: left;
-}
-
-.term-table th {
-    background-color: var(--term-green-dim);
-    color: var(--bg-color);
-    text-shadow: none;
-}
-
-/* --- BLINKING CURSOR --- */
-.prompt {
-    margin-top: 40px;
-}
-
-.cursor {
-    animation: blink 1s step-end infinite;
-}
-
-@keyframes blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0; }
+/* --- FOOTER --- */
+footer {
+    text-align: center;
+    padding: 30px;
+    margin-top: 50px;
+    border-top: 1px solid var(--border-color);
+    color: var(--text-muted);
+    font-family: var(--font-header);
+    font-size: 0.9rem;
+    letter-spacing: 1px;
 }
 
 /* --- RESPONSIVE --- */
 @media (max-width: 768px) {
-    .layout {
+    .header-container {
         flex-direction: column;
+        gap: 15px;
     }
-    .sidebar {
-        border-right: none;
-        border-bottom: 2px dashed var(--term-green-dim);
-        padding-bottom: 20px;
+    .page-intro h1 {
+        font-size: 2rem;
+    }
+    .glossary-grid {
+        grid-template-columns: 1fr;
     }
 }
